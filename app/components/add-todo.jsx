@@ -6,14 +6,22 @@ var AddTodo = React.createClass({
   },
   onSubmit: function (e) {
     e.preventDefault();
-    this.props.onAddTodo(this.refs.text.value);
+    var text = this.refs.text.value.trim();
+
+    if (text.length > 0) {
+      this.props.onAddTodo(text);
+    }
+
+    // this.props.onAddTodo(this.refs.text.value);
   },
   render: function () {
     return (
-      <form action="" onSubmit={this.onSubmit}>
-        <input type="text" placeholder="What do you need to do?" ref="text"/>
-        <button>Add Todo</button>
-      </form>
+      <div>
+        <form ref="form" onSubmit={this.onSubmit}>
+          <input type="text" placeholder="What do you need to do?" ref="text"/>
+          <button className="button expanded">Add Todo</button>
+        </form>
+      </div>
     );
   }
 });
