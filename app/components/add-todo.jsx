@@ -8,6 +8,8 @@ var AddTodo = React.createClass({
     e.preventDefault();
     var text = this.refs.text.value.trim();
 
+    this.refs.text.value = '';
+
     if (text.length > 0) {
       this.props.onAddTodo(text);
     }

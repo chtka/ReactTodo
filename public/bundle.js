@@ -108,11 +108,11 @@
 	var TodoApp = __webpack_require__(229);
 
 	// Load foundation
-	__webpack_require__(239);
+	__webpack_require__(240);
 	$(document).foundation();
 
 	// app css
-	__webpack_require__(243);
+	__webpack_require__(244);
 
 	// when path is "about", renders about, if its just the index of the page, then renders weather
 	ReactDOM.render(React.createElement(TodoApp, null), document.getElementById('app'));
@@ -25488,6 +25488,7 @@
 	var TodoList = __webpack_require__(235);
 	var AddTodo = __webpack_require__(237);
 	var TodoSearch = __webpack_require__(238);
+	var TodoAPI = __webpack_require__(239);
 
 	var TodoApp = React.createClass({
 	  displayName: 'TodoApp',
@@ -25496,26 +25497,13 @@
 	    return {
 	      showCompleted: false,
 	      searchText: '',
-	      todos: [{
-	        id: uuid(),
-	        text: 'Walk the dog',
-	        completed: false
-	      }, {
-	        id: uuid(),
-	        text: 'Clean the yard',
-	        completed: true
-	      }, {
-	        id: uuid(),
-	        text: 'Study for finals',
-	        completed: true
-	      }, {
-	        id: uuid(),
-	        text: 'Buy groceries',
-	        completed: false
-	      }]
+	      todos: TodoAPI.getTodos()
 	    };
 	  },
-	  hangleSearch: function hangleSearch(showCompleted, searchText) {
+	  componentDidUpdate: function componentDidUpdate() {
+	    TodoAPI.setTodos(this.state.todos);
+	  },
+	  handleSearch: function handleSearch(showCompleted, searchText) {
 	    this.setState({
 	      showCompleted: showCompleted,
 	      searchText: searchText.toLowerCase()
@@ -25852,12 +25840,12 @@
 /* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(8);
 
 	var AddTodo = React.createClass({
-	  displayName: "AddTodo",
+	  displayName: 'AddTodo',
 
 	  propTypes: {
 	    onAddTodo: React.PropTypes.func.isRequired
@@ -25865,6 +25853,8 @@
 	  onSubmit: function onSubmit(e) {
 	    e.preventDefault();
 	    var text = this.refs.text.value.trim();
+
+	    this.refs.text.value = '';
 
 	    if (text.length > 0) {
 	      this.props.onAddTodo(text);
@@ -25874,16 +25864,16 @@
 	  },
 	  render: function render() {
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "form",
-	        { ref: "form", onSubmit: this.onSubmit },
-	        React.createElement("input", { type: "text", placeholder: "What do you need to do?", ref: "text" }),
+	        'form',
+	        { ref: 'form', onSubmit: this.onSubmit },
+	        React.createElement('input', { type: 'text', placeholder: 'What do you need to do?', ref: 'text' }),
 	        React.createElement(
-	          "button",
-	          { className: "button expanded" },
-	          "Add Todo"
+	          'button',
+	          { className: 'button expanded' },
+	          'Add Todo'
 	        )
 	      )
 	    );
@@ -25938,13 +25928,38 @@
 /* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var $ = __webpack_require__(7);
+	module.exports = {
+	  setTodos: function setTodos(todos) {
+	    if ($.isArray(todos)) {
+	      localStorage.setItem('todos', JSON.stringify(todos));
+	      return todos;
+	    }
+	  },
+	  getTodos: function getTodos() {
+	    var stringTodos = localStorage.getItem('todos');
+	    var todos = [];
+	    try {
+	      todos = JSON.parse(stringTodos);
+	    } catch (e) {}
+
+	    return $.isArray(todos) ? todos : [];
+	  }
+	};
+
+/***/ }),
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(240);
+	var content = __webpack_require__(241);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(242)(content, {});
+	var update = __webpack_require__(243)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25961,10 +25976,10 @@
 	}
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(241)();
+	exports = module.exports = __webpack_require__(242)();
 	// imports
 
 
@@ -25975,7 +25990,7 @@
 
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports) {
 
 	/*
@@ -26031,7 +26046,7 @@
 
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -26283,16 +26298,16 @@
 
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(244);
+	var content = __webpack_require__(245);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(242)(content, {});
+	var update = __webpack_require__(243)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26309,10 +26324,10 @@
 	}
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(241)();
+	exports = module.exports = __webpack_require__(242)();
 	// imports
 
 
